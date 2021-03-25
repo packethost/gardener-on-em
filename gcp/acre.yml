@@ -1,0 +1,46 @@
+landscape:
+  name: my-gardener # change me
+  # Used to create endpoints for the Gardener API and UI. Do *NOT* use the same domain as the one
+  # used for creating the k8s cluster.
+  domain: landscape.gardener-packet.com # change me
+
+  cluster:
+    kubeconfig: ./kubeconfig
+    networks:
+      nodes: 10.128.0.0/20     # change me
+      pods: 10.76.0.0/14       # change me
+      services: 10.80.0.0/20   # change me
+  iaas:
+    - name: (( iaas[0].type ))
+      type: gcp
+      shootDefaultNetworks:
+        pods: 10.76.0.0/14
+        services: 10.80.0.0/20	
+      region: us-central1
+      zones:
+        - us-central1-c
+      seedConfig:
+        backup:
+          active: true
+      credentials:
+        # Used by Gardener to create DNS records.
+        serviceaccount.json: |
+          SERVICE_ACCOUNT_JSON       # change me
+  etcd:
+    backup:
+      active: false
+      type: gcs
+      region: (( iaas[0].region ))
+      credentials: (( iaas[0].credentials ))
+
+  dns:
+    type: google-clouddns
+    credentials: (( iaas[0].credentials ))
+
+  identity:
+    users:
+      # Used for logging into the Gardener UI.
+      - email: "someone@example.com" # change me
+        username: "someone"          # change me
+        password: "securepassword"   # change me
+

@@ -1,0 +1,50 @@
+landscape:
+  name: my-gardener # change me
+  # Used to create endpoints for the Gardener API and UI. Do *NOT* use the same domain as the one
+  # used for creating the k8s cluster.
+  domain: my-gardener.example.com # change me
+
+  cluster:
+    kubeconfig: ./kubeconfig
+    networks:
+      nodes: 172.17.0.0/16
+      pods: 100.96.0.0/11
+      services: 100.64.0.0/13
+
+  iaas:
+    - name: (( iaas[0].type ))
+      type: aws
+      shootDefaultNetworks:
+        pods: 10.96.0.0/11
+        services: 10.64.0.0/13
+      region: eu-central-1
+      zones:
+        - eu-central-1a
+        - eu-central-1b
+        - eu-central-1c
+      seedConfig:
+        backup:
+          active: false
+      credentials:
+        # Used by Gardener to create Route53 DNS records.
+        accessKeyID: AKIAxxxxxxxx         # change me
+        secretAccessKey: xxxxxxxxxxxxxxxx # change me
+
+  etcd:
+    backup:
+      active: true
+      type: s3
+      region: (( iaas[0].region ))
+      credentials: (( iaas[0].credentials ))
+
+  dns:
+    type: aws-route53
+    credentials: (( iaas[0].credentials ))
+
+  identity:
+    users:
+      # Used for logging into the Gardener UI.
+      - email: "someone@example.com" # change me
+        username: "someone"          # change me
+        password: "securepassword"   # change me
+
