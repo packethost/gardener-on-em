@@ -63,3 +63,8 @@ but are simplified and will help you get started. The following are the supporte
 * [Garden cluster on AWS/EKS](./aws)
 * [Garden cluster on GCP/GKE](/gcp)
 
+Once you have deployed a garden cluster - via one of the above guides or on your own - you an deploy a seed and a shoot.
+
+* [Deploy a seed](./seed.md)
+* [Deploy a shoot](./shoot.md)
+
